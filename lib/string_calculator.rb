@@ -5,8 +5,14 @@ class StringCalculator
     delimiters = [",", "\n"]
     if numbers.start_with?("//")
       parts = numbers.split("\n", 2)
-      custom_delim = parts[0][2]
-      delimiters = [custom_delim]
+      delimiter_part = parts[0][2..]
+
+      if delimiter_part.start_with?("[")
+        delimiters = delimiter_part.scan(/\[(.+?)\]/).flatten
+      else
+        delimiters = [delimiter_part]
+      end
+
       numbers = parts[1]
     end
 
